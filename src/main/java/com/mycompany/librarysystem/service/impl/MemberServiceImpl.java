@@ -4,17 +4,22 @@ import com.mycompany.librarysystem.domain.Book;
 import com.mycompany.librarysystem.domain.Constants;
 import com.mycompany.librarysystem.domain.Member;
 import com.mycompany.librarysystem.dto.MemberDTO;
+import com.mycompany.librarysystem.dto.criteria.MemberCriteria;
 import com.mycompany.librarysystem.repository.BookRepository;
 import com.mycompany.librarysystem.repository.MemberRepository;
 import com.mycompany.librarysystem.service.MemberService;
 import com.mycompany.librarysystem.service.mapper.MemberMapper;
+import com.mycompany.librarysystem.service.specifications.MemberSpecification;
 import com.mycompany.librarysystem.web.error.BorrowingLimitException;
 import com.mycompany.librarysystem.web.error.DuplicateBookException;
 import com.mycompany.librarysystem.web.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -49,5 +54,21 @@ public class MemberServiceImpl implements MemberService {
         }else throw new BorrowingLimitException(Constants.MEMBER +memberId);
         member.setMembershipDate(LocalDateTime.now());
         return memberMapper.toDTO(memberRepository.save(member));
+    }
+
+    @Override
+    public List<Member> searchMembers(MemberCriteria memberCriteria, Pageable pageable) {
+        Specification<Member> spec = Specification.where(null);
+        if (memberCriteria.getName() != null && !memberCriteria.getName().isEmpty()) {
+            spec = spec.and(MemberSpecification.hasName(memberCriteria.getName()));
+        }
+        if (memberCriteria.getLastName() != null && !memberCriteria.getLastName().isEmpty()) {
+            spec = spec.and(MemberSpecification.hasLastName(memberCriteria.getLastName()));
+        }
+        if (memberCriteria.getMembershipDate() != null ) {
+            spec = spec.and(MemberSpecification.hasMembershipDate(memberCriteria.getMembershipDate()));
+        }
+
+        return memberRepository.findAll(spec, pageable).getContent();
     }
 }
