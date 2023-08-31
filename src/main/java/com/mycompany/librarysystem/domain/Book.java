@@ -3,9 +3,9 @@ package com.mycompany.librarysystem.domain;
 import jakarta.persistence.*;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -14,31 +14,44 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "book_number")
+    @Column(name = "book_number", unique = true)
     private Long bookNumber;
+
+    @Column(name = "title" , nullable = false , length = 400)
+    private String title;
     @Column(name = "published_year")
     private Year publishedYear;
 
-    @Column(name = "is_borrowed", nullable = false, length = 5)
-    private Boolean isBorrowed;
+    @Column(name = "is_borrowed",columnDefinition = "boolean default false", length = 5)
+    private boolean isBorrowed;
 
     @OneToMany
-    private List<Author> authors = new ArrayList<>();
+    @JoinTable(name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors = new HashSet<>();
 
-    @OneToMany
-    private List<Translator> translators = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "book_translator",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "translator_id"))
+    private Set<Translator> translators = new HashSet<>();
+
+    public Book() {
+        this.isBorrowed = false;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id) && Objects.equals(bookNumber, book.bookNumber) && Objects.equals(publishedYear, book.publishedYear) && Objects.equals(isBorrowed, book.isBorrowed) && Objects.equals(authors, book.authors) && Objects.equals(translators, book.translators);
+        return Objects.equals(id, book.id) && Objects.equals(bookNumber, book.bookNumber) && Objects.equals(title, book.title) && Objects.equals(publishedYear, book.publishedYear) && Objects.equals(isBorrowed, book.isBorrowed) && Objects.equals(authors, book.authors) && Objects.equals(translators, book.translators);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookNumber, publishedYear, isBorrowed, authors, translators);
+        return Objects.hash(id, bookNumber, title, publishedYear, isBorrowed, authors, translators);
     }
 
     @Override
@@ -46,6 +59,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", bookNumber=" + bookNumber +
+                ", title='" + title + '\'' +
                 ", publishedYear=" + publishedYear +
                 ", isBorrowed=" + isBorrowed +
                 ", authors=" + authors +
@@ -69,6 +83,14 @@ public class Book {
         this.bookNumber = bookNumber;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Year getPublishedYear() {
         return publishedYear;
     }
@@ -77,27 +99,27 @@ public class Book {
         this.publishedYear = publishedYear;
     }
 
-    public Boolean getBorrowed() {
+    public boolean getBorrowed() {
         return isBorrowed;
     }
 
-    public void setBorrowed(Boolean borrowed) {
+    public void setBorrowed(boolean borrowed) {
         isBorrowed = borrowed;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 
-    public List<Translator> getTranslators() {
+    public Set<Translator> getTranslators() {
         return translators;
     }
 
-    public void setTranslators(List<Translator> translators) {
+    public void setTranslators(Set<Translator> translators) {
         this.translators = translators;
     }
 }
