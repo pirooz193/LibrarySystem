@@ -1,11 +1,10 @@
 package com.mycompany.librarysystem.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "author")
-public class Author extends Person{
-
-    private String authorCode;
+public class Author extends Person {
 
 }
