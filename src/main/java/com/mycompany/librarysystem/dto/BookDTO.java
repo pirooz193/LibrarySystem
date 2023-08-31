@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Year;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookDTO {
@@ -22,7 +20,7 @@ public class BookDTO {
     @JsonProperty(value = "isBorrowed")
     private boolean isBorrowed;
     @JsonProperty(value = "authors")
-    private Set<AuthorDTO> authors = new HashSet<>();
+    private List<AuthorDTO> authors = new ArrayList<>();
     @JsonProperty(value = "translators")
     private Set<TranslatorDTO> translators = new HashSet<>();
 
@@ -93,11 +91,11 @@ public class BookDTO {
         isBorrowed = borrowed;
     }
 
-    public Set<AuthorDTO> getAuthors() {
+    public List<AuthorDTO> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<AuthorDTO> authors) {
+    public void setAuthors(List<AuthorDTO> authors) {
         this.authors = authors;
     }
 

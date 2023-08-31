@@ -3,9 +3,7 @@ package com.mycompany.librarysystem.domain;
 import jakarta.persistence.*;
 
 import java.time.Year;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "book")
@@ -25,16 +23,16 @@ public class Book {
     @Column(name = "is_borrowed",columnDefinition = "boolean default false", length = 5)
     private boolean isBorrowed;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors = new HashSet<>();
+    private List<Author> authors = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "book_translator",
             joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "translator_id"))
+            inverseJoinColumns = @JoinColumn(name = "translator_id" ))
     private Set<Translator> translators = new HashSet<>();
 
     public Book() {
@@ -107,11 +105,11 @@ public class Book {
         isBorrowed = borrowed;
     }
 
-    public Set<Author> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<Author> authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
