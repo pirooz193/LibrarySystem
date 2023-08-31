@@ -20,3 +20,8 @@ logging:
 
 server:
   port: 8081
+
+application:
+  book:
+    borrowing:
+      limit: 2
