@@ -51,13 +51,13 @@ public class BookServiceIml implements BookService {
         Specification<Book> spec = Specification.where(null);
 
         if (criteria.getAuthorName() != null && !criteria.getAuthorName().isEmpty()) {
-            spec = spec.or(BookSpecifications.hasAuthorName(criteria.getAuthorName()));
+            spec = spec.and(BookSpecifications.hasAuthorName(criteria.getAuthorName()));
         }
         if (criteria.getTranslatorName() != null && !criteria.getTranslatorName().isEmpty()) {
-            spec = spec.or(BookSpecifications.hasTranslatorName(criteria.getTranslatorName()));
+            spec = spec.and(BookSpecifications.hasTranslatorName(criteria.getTranslatorName()));
         }
         if (criteria.getTitle() != null && !criteria.getTitle().isEmpty()) {
-            spec = spec.or(BookSpecifications.hasBookName(criteria.getTitle()));
+            spec = spec.and(BookSpecifications.hasBookName(criteria.getTitle()));
         }
         return bookRepository.findAll(spec, pageable);
     }
