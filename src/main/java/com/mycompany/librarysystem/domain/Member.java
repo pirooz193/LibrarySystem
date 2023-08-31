@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class Member extends Person {
     private GenderType gender;
 
     @OneToMany
-    private List<Book> borrowedBooks;
+    private List<Book> borrowedBooks = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

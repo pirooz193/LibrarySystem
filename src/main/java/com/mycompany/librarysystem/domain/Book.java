@@ -3,6 +3,7 @@ package com.mycompany.librarysystem.domain;
 import jakarta.persistence.*;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,10 +23,10 @@ public class Book {
     private Boolean isBorrowed;
 
     @OneToMany
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
     @OneToMany
-    private List<Translator> translators;
+    private List<Translator> translators = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
