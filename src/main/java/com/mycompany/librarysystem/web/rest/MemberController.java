@@ -3,6 +3,7 @@ package com.mycompany.librarysystem.web.rest;
 import com.mycompany.librarysystem.domain.Member;
 import com.mycompany.librarysystem.dto.MemberDTO;
 import com.mycompany.librarysystem.dto.criteria.MemberCriteria;
+import com.mycompany.librarysystem.dto.model.BorrowRequestModel;
 import com.mycompany.librarysystem.service.MemberService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +29,16 @@ public class MemberController {
         return ResponseEntity.created(URI.create("/api/member")).body(createdMember);
     }
 
-    @PostMapping("/{memberId}/borrow/{bookNumber}")
-    public ResponseEntity<MemberDTO> borrowBook(@PathVariable Long memberId, @PathVariable Long bookNumber) {
-        MemberDTO memberDTO = memberService.borrowBookByMember(memberId, bookNumber);
+    @PostMapping("/borrow")
+    public ResponseEntity<MemberDTO> borrowBook(@RequestBody BorrowRequestModel borrowRequestModel) {
+        MemberDTO memberDTO = memberService.borrowBookByMember(borrowRequestModel);
+        return ResponseEntity.ok(memberDTO);
+    } @PatchMapping("/return")
+    public ResponseEntity<MemberDTO> returnBook(@RequestBody BorrowRequestModel borrowRequestModel) {
+        MemberDTO memberDTO = memberService.returnBook(borrowRequestModel);
         return ResponseEntity.ok(memberDTO);
     }
+
 
     @GetMapping
     public ResponseEntity<List<Member>> searchMembers(@ModelAttribute MemberCriteria memberCriteria, Pageable pageable) {
