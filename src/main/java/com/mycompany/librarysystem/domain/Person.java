@@ -12,8 +12,9 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name" , nullable = false, length = 100) private String name;
-    @Column(name = "last_name" , nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+    @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
     @Column(name = "national_code", unique = true, length = 15, nullable = false)
