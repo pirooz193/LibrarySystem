@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookDTO {
@@ -14,14 +14,17 @@ public class BookDTO {
     private Long id;
     @JsonProperty(value = "bookNumber")
     private Long bookNumber;
+
+    @JsonProperty(value = "title")
+    private String title;
     @JsonProperty(value = "publishedYear")
     private Year publishedYear;
     @JsonProperty(value = "isBorrowed")
-    private Boolean isBorrowed;
+    private boolean isBorrowed;
     @JsonProperty(value = "authors")
-    private List<AuthorDTO> authors = new ArrayList<>();
+    private Set<AuthorDTO> authors = new HashSet<>();
     @JsonProperty(value = "translators")
-    private List<TranslatorDTO> translators = new ArrayList<>();
+    private Set<TranslatorDTO> translators = new HashSet<>();
 
 
     @Override
@@ -29,12 +32,12 @@ public class BookDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookDTO bookDTO = (BookDTO) o;
-        return Objects.equals(id, bookDTO.id) && Objects.equals(bookNumber, bookDTO.bookNumber) && Objects.equals(publishedYear, bookDTO.publishedYear) && Objects.equals(isBorrowed, bookDTO.isBorrowed) && Objects.equals(authors, bookDTO.authors) && Objects.equals(translators, bookDTO.translators);
+        return Objects.equals(id, bookDTO.id) && Objects.equals(bookNumber, bookDTO.bookNumber) && Objects.equals(title, bookDTO.title) && Objects.equals(publishedYear, bookDTO.publishedYear) && Objects.equals(isBorrowed, bookDTO.isBorrowed) && Objects.equals(authors, bookDTO.authors) && Objects.equals(translators, bookDTO.translators);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookNumber, publishedYear, isBorrowed, authors, translators);
+        return Objects.hash(id, bookNumber, title, publishedYear, isBorrowed, authors, translators);
     }
 
     @Override
@@ -42,6 +45,7 @@ public class BookDTO {
         return "BookDTO{" +
                 "id=" + id +
                 ", bookNumber=" + bookNumber +
+                ", title='" + title + '\'' +
                 ", publishedYear=" + publishedYear +
                 ", isBorrowed=" + isBorrowed +
                 ", authors=" + authors +
@@ -65,6 +69,14 @@ public class BookDTO {
         this.bookNumber = bookNumber;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Year getPublishedYear() {
         return publishedYear;
     }
@@ -73,27 +85,27 @@ public class BookDTO {
         this.publishedYear = publishedYear;
     }
 
-    public Boolean getBorrowed() {
+    public boolean getBorrowed() {
         return isBorrowed;
     }
 
-    public void setBorrowed(Boolean borrowed) {
+    public void setBorrowed(boolean borrowed) {
         isBorrowed = borrowed;
     }
 
-    public List<AuthorDTO> getAuthors() {
+    public Set<AuthorDTO> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<AuthorDTO> authors) {
+    public void setAuthors(Set<AuthorDTO> authors) {
         this.authors = authors;
     }
 
-    public List<TranslatorDTO> getTranslators() {
+    public Set<TranslatorDTO> getTranslators() {
         return translators;
     }
 
-    public void setTranslators(List<TranslatorDTO> translators) {
+    public void setTranslators(Set<TranslatorDTO> translators) {
         this.translators = translators;
     }
 }
