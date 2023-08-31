@@ -1,4 +1,4 @@
-package com.mycompany.mapper;
+package com.mycompany.librarysystem.service.mapper;
 
 import com.mycompany.librarysystem.domain.Author;
 import com.mycompany.librarysystem.dto.AuthorDTO;
