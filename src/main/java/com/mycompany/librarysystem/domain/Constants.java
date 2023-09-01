@@ -7,5 +7,5 @@ public class Constants {
     public static final String MEMBER = "member ";
     public static final String REPORT = "report";
     public static final String DASH = "-";
-    public static final String TO = "-";
+    public static final String TO = "to";
 }
