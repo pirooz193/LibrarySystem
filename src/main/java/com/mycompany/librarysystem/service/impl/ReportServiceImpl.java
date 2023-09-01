@@ -56,8 +56,12 @@ public class ReportServiceImpl implements ReportService {
             Row dataRow = sheet.createRow(rowNum++);
             dataRow.createCell(0).setCellValue(report.getNationalCode());
             dataRow.createCell(1).setCellValue(report.getBookNumber());
-            dataRow.createCell(2).setCellValue(report.getBorrowedStartDate() != null ? report.getBorrowedStartDate().toString() : "Not borrowed yet");
-            dataRow.createCell(3).setCellValue(report.getBorrowedEndDate() != null ? report.getBorrowedEndDate().toString() : "Not returned yet");
+            dataRow.createCell(2)
+                    .setCellValue(report.getBorrowedStartDate() != null
+                            ? report.getBorrowedStartDate().toString() : "Not borrowed yet");
+            dataRow.createCell(3)
+                    .setCellValue(report.getBorrowedEndDate() != null
+                            ? report.getBorrowedEndDate().toString() : "Not returned yet");
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
@@ -65,6 +69,6 @@ public class ReportServiceImpl implements ReportService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  outputStream.toByteArray();
+        return outputStream.toByteArray();
     }
 }

@@ -33,7 +33,9 @@ public class MemberController {
     public ResponseEntity<MemberDTO> borrowBook(@RequestBody BorrowRequestModel borrowRequestModel) {
         MemberDTO memberDTO = memberService.borrowBookByMember(borrowRequestModel);
         return ResponseEntity.ok(memberDTO);
-    } @PatchMapping("/return")
+    }
+
+    @PatchMapping("/return")
     public ResponseEntity<MemberDTO> returnBook(@RequestBody BorrowRequestModel borrowRequestModel) {
         MemberDTO memberDTO = memberService.returnBook(borrowRequestModel);
         return ResponseEntity.ok(memberDTO);
