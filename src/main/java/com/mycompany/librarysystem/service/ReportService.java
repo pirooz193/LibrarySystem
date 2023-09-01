@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ReportService {
     List<Report> getReportsBetweenDates(LocalDateTime start, LocalDateTime end);
+
+    byte[] getReportsExcelFile(LocalDateTime start, LocalDateTime end);
 }
