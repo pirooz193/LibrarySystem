@@ -22,11 +22,25 @@ public class ReportServiceImpl implements ReportService {
         this.reportRepository = reportRepository;
     }
 
+    /**
+     * Retrieves a list of reports for borrowed items within the specified date range.
+     *
+     * @param start The start date of the report period.
+     * @param end   The end date of the report period.
+     * @return A list of {@link Report} objects representing the borrowed items within the specified date range.
+     */
     @Override
     public List<Report> getReportsBetweenDates(LocalDateTime start, LocalDateTime end) {
         return reportRepository.findAllByBorrowedStartDateBetween(start, end);
     }
 
+    /**
+     * Generates an Excel file containing a report of borrowed items within the specified date range.
+     *
+     * @param start The start date of the report period.
+     * @param end   The end date of the report period.
+     * @return A byte array representing the Excel file containing the report.
+     */
     @Override
     public byte[] getReportsExcelFile(LocalDateTime start, LocalDateTime end) {
         List<Report> reports = reportRepository.findAllByBorrowedStartDateBetween(start, end);

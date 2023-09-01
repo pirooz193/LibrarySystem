@@ -32,6 +32,12 @@ public class BookServiceIml implements BookService {
         this.bookMapper = bookMapper;
     }
 
+    /**
+     * Creates a new book based on the provided book data.
+     *
+     * @param bookDTO The {@link BookDTO} containing the book information to be created.
+     * @return A {@link BookDTO} representing the newly created book, with the borrowed status set to false.
+     */
     @Override
     public BookDTO createBook(BookDTO bookDTO) {
         Book book = bookMapper.toEntity(bookDTO);
@@ -40,13 +46,29 @@ public class BookServiceIml implements BookService {
         return bookMapper.toDTO(savedBook);
     }
 
+
+    /**
+     * Retrieves a specific book based on the provided book ID.
+     *
+     * @param bookId The unique identifier of the book to be retrieved.
+     * @return A {@link BookDTO} representing the book with the specified ID.
+     * @throws NotFoundException if the book with the given ID is not found.
+     */
     @Override
     public BookDTO getRequiredBook(Long bookId) {
         Book requiredBook = bookRepository.findById(bookId)
-                .orElseThrow(() -> new NotFoundException(Constants.BOOK +bookId));
+                .orElseThrow(() -> new NotFoundException(Constants.BOOK + bookId));
         return bookMapper.toDTO(requiredBook);
     }
 
+
+    /**
+     * Searches for books based on specified criteria and pagination options.
+     *
+     * @param criteria The criteria for filtering books, including author name, translator name, and book title.
+     * @param pageable Pagination information, including page number, page size, and sorting.
+     * @return A {@link Page} containing a list of {@link Book} objects that match the given criteria and pagination settings.
+     */
     public Page<Book> searchBooks(BookCriteria criteria, Pageable pageable) {
         Specification<Book> spec = Specification.where(null);
 
@@ -62,11 +84,25 @@ public class BookServiceIml implements BookService {
         return bookRepository.findAll(spec, pageable);
     }
 
+    /**
+     * Retrieves a list of all books available in the library.
+     *
+     * @return A list of {@link Book} objects representing all the books in the library.
+     */
     @Override
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
+    /**
+     * Adds an author to a specific book by their IDs.
+     *
+     * @param bookNumber The unique number of the book to which the author will be added.
+     * @param authorId   The unique identifier of the author to be added.
+     * @return A {@link BookDTO} representing the updated book after adding the author.
+     * @throws NotFoundException      if the book with the given number or the author with the given ID is not found.
+     * @throws DuplicateBookException if the author is already associated with the book.
+     */
     @Override
     public BookDTO addAuthorToRequiredBook(Long bookNumber, Long authorId) {
         Book requiredBook = bookRepository.findById(bookNumber)

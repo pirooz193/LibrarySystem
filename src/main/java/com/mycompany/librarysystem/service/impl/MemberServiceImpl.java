@@ -44,6 +44,13 @@ public class MemberServiceImpl implements MemberService {
         this.reportRepository = reportRepository;
     }
 
+
+    /**
+     * Creates a new member based on the provided member data.
+     *
+     * @param memberDTO The {@link MemberDTO} containing the member information to be created.
+     * @return A {@link MemberDTO} representing the newly created member, including membership date.
+     */
     @Override
     public MemberDTO createMember(MemberDTO memberDTO) {
         Member member = memberMapper.toEntity(memberDTO);
@@ -51,6 +58,16 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.toDTO(memberRepository.save(member));
     }
 
+    /**
+     * Performs the process of borrowing a book by a member.
+     *
+     * @param borrowRequestModel The request model containing information about the book to be borrowed, including book number and member ID.
+     * @return A {@link MemberDTO} representing the updated member after borrowing the book.
+     * @throws NotFoundException      if the specified member is not found.
+     * @throws DuplicateBookException if the member has already borrowed the same book.
+     * @throws BorrowingLimitException if the member has reached their borrowing limit.
+     * @throws BookIsBorrowedException if the book is already borrowed by another member.
+     */
     @Transactional
     @Override
     public MemberDTO borrowBookByMember(BorrowRequestModel borrowRequestModel) {
@@ -73,6 +90,13 @@ public class MemberServiceImpl implements MemberService {
         } else throw new BookIsBorrowedException(Constants.BOOK + bookNumber);
     }
 
+
+    /**
+     * Creates and saves a report entry for a book borrowing transaction.
+     *
+     * @param bookNumber   The unique number of the borrowed book.
+     * @param nationalCode The national code of the member borrowing the book.
+     */
     private void createReport(Long bookNumber, String nationalCode) {
         Report report = new Report();
         report.setNationalCode(nationalCode);
@@ -81,6 +105,14 @@ public class MemberServiceImpl implements MemberService {
         reportRepository.save(report);
     }
 
+
+    /**
+     * Searches for members based on specified criteria and pagination options.
+     *
+     * @param memberCriteria The criteria for filtering members, including name, last name, and membership date.
+     * @param pageable       Pagination information, including page number, page size, and sorting.
+     * @return A list of {@link Member} objects that match the given criteria and pagination settings.
+     */
     @Override
     public List<Member> searchMembers(MemberCriteria memberCriteria, Pageable pageable) {
         Specification<Member> spec = Specification.where(null);
@@ -97,6 +129,14 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findAll(spec, pageable).getContent();
     }
 
+
+    /**
+     * Performs the process of returning a borrowed book by a member.
+     *
+     * @param borrowRequestModel The request model containing information about the book return, including book number and member ID.
+     * @return A {@link MemberDTO} representing the updated member after returning the book.
+     * @throws NotFoundException if the specified member or book is not found.
+     */
     @Transactional
     @Override
     public MemberDTO returnBook(BorrowRequestModel borrowRequestModel) {
